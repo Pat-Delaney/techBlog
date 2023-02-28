@@ -1,0 +1,10 @@
+<section class="user">
+  <div class="user-details">
+<header>{{user.username}}</header>
+{{user.username}} has been a blogger since {{user.date_joined}}
+</section>
+<section class="posts">
+{{#each posts as |post|}}
+{{> post_partial}}
+{{/each}}
+</section>

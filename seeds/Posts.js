@@ -4,10 +4,15 @@ const { Post } = require('../models');
 const postData = [
   {
     title: 'Hello',
-    poster_id: '1',
-    post_date: 'Jan 1, 2023',
-    desc:
-      'Just saying Hi',
+    post_date: '2014-09-06 00:43:33',
+    desc: 'Just saying Hi',
+    user_id: 1,
+  },
+  {
+    title: 'Hello Again',
+    post_date: '2014-08-05 00:43:33',
+    desc: 'Just saying Hi again',
+    user_id: 1,
   },
 ];
 

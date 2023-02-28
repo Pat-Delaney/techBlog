@@ -1,0 +1,21 @@
+<section class="user">
+  <div class="user-details">
+<h2>{{user.username}}</h2>
+{{user.username}} has been a blogger since {{user.date_joined}}
+    <h3>
+  {{#eq current_user user.id}}
+    <p>Make a new post:</p>
+    <form class="form new_post_form" data-id="{{user.id}}">
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title"><br>
+    <label for="desc">Content:</label><br>
+    <input type="textarea" id="desc" name="desc"><br>
+    <input type="submit" id="post" name="post" data-id="{{user.id}}" class="btn-no-style">Post</button>
+    </form>
+    {{else}}
+    <a href="/login">Login</a>
+    {{/eq}}
+    </h3>
+  </div>
+  <script src="/js/profile.js"></script>
+</section>

@@ -34,14 +34,12 @@ User.init(
       validate: {
         len: [8],
       },
-    posts:{
-      type: DataTypes.STRING,
-      references:{
-        model: 'post',
-        key: 'id',
-      },
-    }
     },
+    date_joined: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    }
   },
   {
     hooks: {

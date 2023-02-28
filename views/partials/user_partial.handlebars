@@ -1,0 +1,10 @@
+
+<header>{{username}}</header>
+{{username}} has been a blogger since {{date_joined}}
+    <h3>
+    {{#if loggedIn}}
+    <button id="logout" class="btn-no-style">Logout</button>
+    {{else}}
+    <a href="/login">Login</a>
+    {{/if}}
+    </h3>

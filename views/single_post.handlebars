@@ -1,33 +1,16 @@
+<section class="posts">
 <section class="card">
   <a href="/post/{{id}}">
-    <h2>{{title}}</h2>
-    Posted By:<a href="/user/{{user_id}}"></a>{{user.username}}</a>
+    <header>{{title}}</header>
+    Posted By:<a href="/user/{{user_id}}">{{user.username}}</a>
     <p>{{desc}}</p>
   </a>
-  <button type="button" class="btn btn-primary" data-id="{{id}}" data-bs-toggle="modal" data-bs-post="{{id}}" data-bs-target="#commentModal" id="comment">Post a Comment</button>
-    
-<div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModal" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="commentModalLabel">New Comment</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="edit_comment_desc" class="col-form-label">Content:</label>
-            <textarea class="form-control" id="edit_comment_desc"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" data-id="{{id}}" class="btn btn-primary comment_button" id="comment_button">Post Comment</button>
-      </div>
-    </div>
+  <div>
+    {{#each comment as |comment|}}
+    {{>comment_partial}}
+    {{/each}}
   </div>
-</div>
+
   {{#eq current_user user.id}}
     <button type="button" class="btn btn-primary" data-id="{{id}}" data-bs-toggle="modal" data-bs-post="{{id}}" data-bs-target="#editModal" id="edit_post">Edit</button>
     
@@ -57,12 +40,10 @@
     </div>
   </div>
 </div>
-<script src="/js/post.js"></script>
+
     {{/eq}}
 
     
 </section>
-
-</section>
-
+<script src="/js/post.js"></script>
 </section>

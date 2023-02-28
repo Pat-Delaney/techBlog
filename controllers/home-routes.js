@@ -1,14 +1,18 @@
 const router = require('express').Router();
-const { Posts, Users } = require('../models');
+const { Post, User, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 // GET home
 router.get('/', async (req, res) => {
   try {
-    const dbPosts = await Posts.findAll({
+    const dbPosts = await Post.findAll({
       include: [
         {
-          model: Painting,
-          attributes: ['filename', 'description'],
+          model: User,
+          attributes: ['username'],
+        },
+        {
+          model: Comment,
+          attributes: ['desc','user_id'],
         },
       ],
     });
@@ -27,52 +31,40 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET one user
+router.get('/dashboard', withAuth, async (req, res)=>{
+  try {
+    const userData = await User.findByPk(req.session.current_user, {
+      attributes: {
+         exclude: 'password',
+      },
+    });
+    const user = userData.get({ plain: true });
 
-router.get('/user/:id', withAuth, async (req, res) => {
-
-    try {
-      const dbUserData = await Users.findByPk(req.params.id, {
-        include: [
-          {
-            model: User,
-            attributes: [
-              'username',
-          
-            ],
-          },
-        ],
-      });
-      const User = dbUserData.get({ plain: true });
-      res.render('user', { User, loggedIn: req.session.loggedIn });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
-  }
-);
-
-// GET one post
-
-router.get('/post/:id',withAuth, async (req, res) => {
-
-  if (!req.session.loggedIn) {
-    res.redirect('/login');
-  } else {
-
-    try {
-      const postData = await Post.findByPk(req.params.id);
-
-      const post = postData.get({ plain: true });
-
-      res.render('post', { post, loggedIn: req.session.loggedIn });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
-  }
+  const dbPosts = await Post.findAll({
+    where: {
+      user_id: req.session.current_user
+    },
+    include: [
+      {
+        model: User,
+        attributes: ['username'],
+      },
+    ],
+  });
+  const posts = dbPosts.map((post) =>
+    post.get({ plain: true })
+  );
+  res.render('dashboard', {
+    posts,
+    user,
+    loggedIn: req.session.loggedIn,
+  });
+}
+catch (err) {
+  console.log(err);
+  res.status(500).json(err);
+}
 });
-
 router.get('/login', (req, res) => {
   if (req.session.loggedIn) {
     res.redirect('/');

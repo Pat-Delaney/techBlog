@@ -1,0 +1,41 @@
+const router = require('express').Router();
+const { Comment, Post} = require('../../models');
+const withAuth = require('../../utils/auth');
+
+router.post('/', withAuth, async (req, res) => {
+  try {
+    const postData = await Comment.create({
+      desc: req.body.desc,
+      user_id: req.session.current_user,
+      post_id: req.body.post_id,
+    });
+
+    req.session.save(() => {
+      res.status(200).json(postData);
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+router.put('/', async (req, res) => {
+    try {
+    const postData = await Comment.update({
+        desc: req.body.desc,
+      },{
+        where: {
+        id: req.body.comment_id
+      }
+    });
+  
+      req.session.save(() => {
+        res.status(200).json(postData);
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  });
+
+module.exports = router;
